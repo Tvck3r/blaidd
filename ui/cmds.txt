@@ -1,0 +1,10 @@
+npx prisma generate
+
+--
+
+apply migrations: npx prisma migrate deploy
+seed database: npx prisma db seed
+
+
+add components:
+npx heroui-cli@latest add card

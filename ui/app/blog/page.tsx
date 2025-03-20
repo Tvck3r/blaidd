@@ -1,9 +1,17 @@
-import { title } from "@/components/primitives";
+import { PrismaClient } from "@prisma/client";
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const prisma = new PrismaClient();
+
+  const allPosts = await prisma.post.findMany({
+    take: 10,
+  });
+
   return (
-    <div>
-      <h1 className={title()}>Blog</h1>
-    </div>
+    <ul>
+      {allPosts.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
   );
 }

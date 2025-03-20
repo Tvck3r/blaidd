@@ -10,7 +10,7 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts",
-    "schema": "db/schema.prisma"
+    "schema": "prisma/schema.prisma"
   },
   "dependencies": {
     "@heroui/button": "2.2.16",

@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 export default async function BlogPage() {
-  const prisma = new PrismaClient();
+  const prisma = new PrismaClient()
 
   const allPosts = await prisma.post.findMany({
     take: 10,
-  });
+  })
 
   return (
     <ul>
@@ -13,5 +13,5 @@ export default async function BlogPage() {
         <li key={post.id}>{post.title}</li>
       ))}
     </ul>
-  );
+  )
 }

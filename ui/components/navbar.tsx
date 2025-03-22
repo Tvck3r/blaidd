@@ -1,3 +1,7 @@
+import { DiscordIcon, GithubIcon, Logo, SearchIcon, TwitterIcon, UserIcon } from '@/components/icons'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { siteConfig } from '@/config/site'
+import { createClient } from '@/utils/supabase/server'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
 import { Kbd } from '@heroui/kbd'
@@ -14,12 +18,9 @@ import {
 import { link as linkStyles } from '@heroui/theme'
 import clsx from 'clsx'
 import NextLink from 'next/link'
+import { redirect } from 'next/navigation'
 
-import { DiscordIcon, GithubIcon, HeartFilledIcon, Logo, SearchIcon, TwitterIcon } from '@/components/icons'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { siteConfig } from '@/config/site'
-
-export const Navbar = () => {
+export const Navbar = async () => {
   const searchInput = (
     <Input
       aria-label="Search"
@@ -38,6 +39,19 @@ export const Navbar = () => {
       type="search"
     />
   )
+
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const handleLogout = async () => {
+    'use server' // Mark this as a server action
+    const supabase = await createClient()
+    await supabase.auth.signOut()
+    redirect('/login') // Redirect after logout
+  }
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -78,16 +92,28 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="hidden md:flex">
-          <Button
-            isExternal
-            as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
-            startContent={<HeartFilledIcon className="text-danger" />}
-            variant="flat"
-          >
-            Sponsor
-          </Button>
+          {user ? (
+            <form action={handleLogout}>
+              <Button
+                type="submit"
+                className="text-sm font-normal text-default-600 bg-default-100"
+                startContent={<UserIcon />}
+                variant="flat"
+              >
+                {user.email}
+              </Button>
+            </form>
+          ) : (
+            <Button
+              as={NextLink}
+              className="text-sm font-normal text-default-600 bg-default-100"
+              href={'/login'}
+              startContent={<UserIcon />}
+              variant="flat"
+            >
+              Login
+            </Button>
+          )}
         </NavbarItem>
       </NavbarContent>
 

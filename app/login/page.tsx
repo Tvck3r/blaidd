@@ -1,3 +1,4 @@
+'use client'
 import { EyeFilledIcon, EyeSlashFilledIcon } from '@/components/icons'
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'

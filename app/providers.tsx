@@ -1,10 +1,11 @@
 'use client'
 
+import type { ThemeProviderProps } from 'next-themes'
+
 import { HeroUIProvider } from '@heroui/system'
 import { ToastProvider } from '@heroui/toast'
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import type { ThemeProviderProps } from 'next-themes'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
@@ -44,6 +45,7 @@ function getQueryClient() {
     // suspends during the initial render. This may not be needed if we
     // have a suspense boundary BELOW the creation of the query client
     if (!browserQueryClient) browserQueryClient = makeQueryClient()
+
     return browserQueryClient
   }
 }
@@ -51,12 +53,13 @@ function getQueryClient() {
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter()
   const queryClient = getQueryClient()
+
   return (
     <HeroUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
         <ToastProvider placement="top-right" toastOffset={60} />
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-        <ReactQueryDevtools initialIsOpen={false} client={queryClient} />
+        <ReactQueryDevtools client={queryClient} initialIsOpen={false} />
       </NextThemesProvider>
     </HeroUIProvider>
   )

@@ -1,14 +1,17 @@
 'use client'
-import { EyeFilledIcon, EyeSlashFilledIcon } from '@/components/icons'
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'
 import { Input } from '@heroui/input'
 import { useState } from 'react'
+
 import { login, signup } from './actions'
+
+import { EyeFilledIcon, EyeSlashFilledIcon } from '@/components/icons'
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+
   return (
     <Form className="w-full max-w-xs">
       <Input

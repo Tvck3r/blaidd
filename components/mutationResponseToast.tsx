@@ -1,5 +1,5 @@
 import { addToast } from '@heroui/toast'
-import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
+import { UseMutationResult } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 interface Props {

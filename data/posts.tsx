@@ -1,7 +1,8 @@
 'use server'
 
-import { TableState } from '@/types'
 import { Post, PrismaClient, User } from '@prisma/client'
+
+import { TableState } from '@/types'
 
 export type PostWithAuthor = Post & {
   author: User | null
@@ -19,9 +20,11 @@ async function fetchPosts(tableState?: TableState): Promise<{ posts: PostWithAut
   const take = pageSize
 
   const orderBy: any = {}
+
   if (sortDescriptor?.column) {
     const column = sortDescriptor.column as string
     const [field, subField] = column.split('.')
+
     orderBy[field] = {}
 
     if (subField) {
@@ -32,6 +35,7 @@ async function fetchPosts(tableState?: TableState): Promise<{ posts: PostWithAut
   }
 
   const where: any = {}
+
   if (filter.search) {
     where.OR = [
       { title: { contains: filter.search } },

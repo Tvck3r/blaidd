@@ -1,9 +1,11 @@
 'use client'
-import { SearchFilter } from '@/types'
-import { debounce } from '@/utils/utils'
 import { Input, InputProps } from '@heroui/input'
 import React, { useEffect, useState } from 'react'
+
 import { SearchIcon } from './icons'
+
+import { debounce } from '@/utils/utils'
+import { SearchFilter } from '@/types'
 
 interface SearchInputProps extends InputProps {
   onSearch: (search: SearchFilter) => void

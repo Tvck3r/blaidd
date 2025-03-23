@@ -1,7 +1,8 @@
-import { createPost, deletePost, fetchPost, fetchPosts, PostWithAuthor, updatePost } from '@/data/posts'
-import { TableState } from '@/types'
 import { Post } from '@prisma/client'
 import { FetchQueryOptions, keepPreviousData, useMutation, UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query'
+
+import { createPost, deletePost, fetchPost, fetchPosts, PostWithAuthor, updatePost } from '@/data/posts'
+import { TableState } from '@/types'
 
 export const initPostsTableState: TableState = {
   page: 1,
@@ -38,6 +39,7 @@ export function usePost(id: number) {
 
 export function useCreatePost(): UseMutationResult<PostWithAuthor, Error, Omit<Post, 'id'>> {
   const queryClient = useQueryClient()
+
   return useMutation<PostWithAuthor, Error, Omit<Post, 'id'>>({
     mutationFn: createPost,
     onSuccess: () => {
@@ -48,6 +50,7 @@ export function useCreatePost(): UseMutationResult<PostWithAuthor, Error, Omit<P
 
 export function useUpdatePost(): UseMutationResult<PostWithAuthor, Error, { id: number; post: Partial<Post> }> {
   const queryClient = useQueryClient()
+
   return useMutation<PostWithAuthor, Error, { id: number; post: Partial<Post> }>({
     mutationFn: ({ id, post }) => updatePost(id, post),
     onSuccess: () => {
@@ -58,6 +61,7 @@ export function useUpdatePost(): UseMutationResult<PostWithAuthor, Error, { id: 
 
 export function useDeletePost(): UseMutationResult<Post, Error, number> {
   const queryClient = useQueryClient()
+
   return useMutation<Post, Error, number>({
     mutationFn: deletePost,
     onSuccess: () => {

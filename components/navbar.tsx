@@ -1,7 +1,3 @@
-import { DiscordIcon, GithubIcon, Logo, SearchIcon, TwitterIcon, UserIcon } from '@/components/icons'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { siteConfig } from '@/config/site'
-import { createClient } from '@/utils/supabase/server'
 import { Button } from '@heroui/button'
 import { Input } from '@heroui/input'
 import { Kbd } from '@heroui/kbd'
@@ -19,6 +15,11 @@ import { link as linkStyles } from '@heroui/theme'
 import clsx from 'clsx'
 import NextLink from 'next/link'
 import { redirect } from 'next/navigation'
+
+import { createClient } from '@/utils/supabase/server'
+import { siteConfig } from '@/config/site'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { DiscordIcon, GithubIcon, Logo, SearchIcon, TwitterIcon, UserIcon } from '@/components/icons'
 
 export const Navbar = async () => {
   const searchInput = (
@@ -49,6 +50,7 @@ export const Navbar = async () => {
   const handleLogout = async () => {
     'use server' // Mark this as a server action
     const supabase = await createClient()
+
     await supabase.auth.signOut()
     redirect('/login') // Redirect after logout
   }
@@ -95,9 +97,9 @@ export const Navbar = async () => {
           {user ? (
             <form action={handleLogout}>
               <Button
-                type="submit"
                 className="text-sm font-normal text-default-600 bg-default-100"
                 startContent={<UserIcon />}
+                type="submit"
                 variant="flat"
               >
                 {user.email}

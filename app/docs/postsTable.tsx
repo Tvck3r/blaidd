@@ -1,4 +1,9 @@
 'use client'
+import { Button } from '@heroui/button'
+import { Pagination } from '@heroui/pagination'
+import { SortDescriptor, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
+import { useCallback, useMemo, useState } from 'react'
+
 import ErrorToast from '@/components/errorToast'
 import { PlusIcon } from '@/components/icons'
 import SearchInput from '@/components/searchInput'
@@ -6,10 +11,6 @@ import { initPostsTableState, usePosts } from '@/queries/posts'
 import { SearchFilter, TableState } from '@/types'
 import { getNestedKeyValue } from '@/utils/getNestedKeyValue'
 import { getLoadingState } from '@/utils/utils'
-import { Button } from '@heroui/button'
-import { Pagination } from '@heroui/pagination'
-import { SortDescriptor, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
-import { useCallback, useMemo, useState } from 'react'
 
 export default function PostsTable() {
   const [tableState, setTableState] = useState<TableState>(initPostsTableState)
@@ -50,7 +51,7 @@ export default function PostsTable() {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <SearchInput onSearch={onSearchChange} className="w-full sm:max-w-[44%]" placeholder="Search..." />
+          <SearchInput className="w-full sm:max-w-[44%]" placeholder="Search..." onSearch={onSearchChange} />
           <div className="flex gap-3">
             <Button color="primary" endContent={<PlusIcon />}>
               Add New
@@ -75,14 +76,12 @@ export default function PostsTable() {
   }, [tableState, onSearchChange, data?.totalCount])
 
   const loadingState = getLoadingState(isLoading, isError)
+
   return (
     <>
       <ErrorToast query={query} />
       <Table
         aria-label="Posts table"
-        sortDescriptor={tableState.sortDescriptor}
-        onSortChange={handleSortChange}
-        topContent={topContent}
         bottomContent={
           (data?.totalCount ?? 0 > 0) ? (
             <div className="flex w-full justify-center">
@@ -98,6 +97,9 @@ export default function PostsTable() {
             </div>
           ) : null
         }
+        sortDescriptor={tableState.sortDescriptor}
+        topContent={topContent}
+        onSortChange={handleSortChange}
       >
         <TableHeader>
           <TableColumn key="author.name" allowsSorting>

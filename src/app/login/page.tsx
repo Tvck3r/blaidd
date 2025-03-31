@@ -35,6 +35,7 @@ export default function LoginPage() {
           </button>
         }
         label="Password"
+        name="password"
         placeholder="Enter your password"
         type={isVisible ? 'text' : 'password'}
         variant="bordered"

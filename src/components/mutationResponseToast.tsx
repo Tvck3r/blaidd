@@ -18,16 +18,16 @@ export default function MutationResponseToast({ mutation, errorMessage }: Props)
     if (showing) return
     if (mutation.isError) {
       setShowing(true)
-      console.log(mutation.error.message)
+      console.error(mutation.error.message)
       addToast({
         title: 'Error',
         description: errorMessage || 'An error occurred',
         color: 'danger',
-        timeout: 3000,
+        timeout: 6000,
         onClose: () => {
           console.log('Toast closed')
           setShowing(false)
-          // mutation.reset();
+          mutation.reset()
         },
       })
     } else if (mutation.isSuccess) {
@@ -36,11 +36,11 @@ export default function MutationResponseToast({ mutation, errorMessage }: Props)
         title: 'Success',
         description: 'Operation completed successfully',
         color: 'success',
-        timeout: 1000,
+        timeout: 3000,
         onClose: () => {
           console.log('Toast closed')
           setShowing(false)
-          // mutation.reset();
+          mutation.reset()
         },
       })
     }

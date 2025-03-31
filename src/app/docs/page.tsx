@@ -1,18 +1,5 @@
-//'use client'
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+'use client'
 
-import PostsTable from './postsTable'
-
-import { prefetchOptions } from '@/src/queries/posts'
-
-export default async function DocsPage() {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery(prefetchOptions)
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <PostsTable />
-    </HydrationBoundary>
-  )
+export default function ErrorPage() {
+  return <p>Sorry, something went wrong</p>
 }

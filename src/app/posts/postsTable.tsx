@@ -1,22 +1,20 @@
 'use client'
-import { Button } from '@heroui/button'
 import { Pagination } from '@heroui/pagination'
 import { SortDescriptor, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/table'
 import { useCallback, useMemo, useState } from 'react'
 
 import ErrorToast from '@/src/components/errorToast'
-import { PlusIcon } from '@/src/components/icons'
 import SearchInput from '@/src/components/searchInput'
-import { initPostsTableState, usePosts } from '@/src/queries/posts'
+import { initPostsTableState, usePosts } from '@/src/hooks/queries/posts'
 import { getNestedKeyValue } from '@/src/utils/getNestedKeyValue'
 import { getLoadingState } from '@/src/utils/utils'
 import { SearchFilter, TableState } from '@/types'
+import NewPost from './newPost'
 
 export default function PostsTable() {
   const [tableState, setTableState] = useState<TableState>(initPostsTableState)
 
   const query = usePosts(tableState)
-  const { data, isLoading, isError, error } = query
 
   const handleSortChange = (sortDescriptor: SortDescriptor) => {
     setTableState((prev) => ({
@@ -53,29 +51,14 @@ export default function PostsTable() {
         <div className="flex justify-between gap-3 items-end">
           <SearchInput className="w-full sm:max-w-[44%]" placeholder="Search..." onSearch={onSearchChange} />
           <div className="flex gap-3">
-            <Button color="primary" endContent={<PlusIcon />}>
-              Add New
-            </Button>
+            <NewPost />
           </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total: {data?.totalCount}</span>
-          <label className="flex items-center text-default-400 text-small">
-            Rows per page:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={(val) => handlePageCountChange(parseInt(val.target.value))}
-            >
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </label>
         </div>
       </div>
     )
-  }, [tableState, onSearchChange, data?.totalCount])
+  }, [tableState, onSearchChange, query.data?.totalCount])
 
-  const loadingState = getLoadingState(isLoading, isError)
+  const loadingState = getLoadingState(query.isLoading, query.isError)
 
   return (
     <>
@@ -83,17 +66,28 @@ export default function PostsTable() {
       <Table
         aria-label="Posts table"
         bottomContent={
-          (data?.totalCount ?? 0 > 0) ? (
-            <div className="flex w-full justify-center">
+          (query.data?.totalCount ?? 0 > 0) ? (
+            <div className="flex w-full justify-between items-center">
+              <span className="text-default-400 text-small">Total: {query.data?.totalCount}</span>
               <Pagination
                 isCompact
                 showControls
                 showShadow
                 color="primary"
                 page={tableState.page}
-                total={Math.ceil(data!.totalCount / tableState.pageSize)}
+                total={Math.ceil(query.data!.totalCount / tableState.pageSize)}
                 onChange={handlePageChange}
               />
+              <label className="flex items-center text-default-400 text-small">
+                Rows per page:
+                <select
+                  className="bg-transparent outline-none text-default-400 text-small"
+                  onChange={(val) => handlePageCountChange(parseInt(val.target.value))}
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                </select>
+              </label>
             </div>
           ) : null
         }
@@ -112,8 +106,8 @@ export default function PostsTable() {
             Content
           </TableColumn>
         </TableHeader>
-        {data ? (
-          <TableBody items={data.posts} loadingState={loadingState}>
+        {query.data ? (
+          <TableBody items={query.data.posts} loadingState={loadingState}>
             {(item) => <TableRow key={item.id}>{(columnKey) => <TableCell>{getNestedKeyValue(item, columnKey)}</TableCell>}</TableRow>}
           </TableBody>
         ) : (

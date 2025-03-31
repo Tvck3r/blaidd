@@ -1,18 +1,16 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.organizeImports", "source.formatDocument"],
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
-  "editor.rulers": [80, 120],
-  "files.autoSave": "onFocusChange",
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "deno.enablePaths": ["supabase/functions"],
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
@@ -29,7 +27,18 @@
     "http",
     "net"
   ],
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  "editor.codeActionsOnSave": [
+    "source.fixAll.eslint",
+    "source.organizeImports",
+    "source.formatDocument"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "files.autoSave": "onFocusChange",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
